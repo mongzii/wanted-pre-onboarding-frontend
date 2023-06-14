@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 const Body = styled.div`
   //border: 3px solid black;
@@ -87,6 +88,23 @@ function Signup() {
       setPasswordValid(false);
     }
   };
+  const handleRegister = (email, password) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/auth/signup`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(res => navigate("/signin"))
+      .catch(err => console.error(err));
+  };
   useEffect(() => {
     if (emailValid && passwordValid) {
       setNotAllow(false);
@@ -131,7 +149,11 @@ function Signup() {
               )}
             </Fff>
           </BoxStyle>
-          <LoginBtn data-testid="signup-button" disabled={notAllow}>
+          <LoginBtn
+            data-testid="signup-button"
+            disabled={notAllow}
+            onClick={() => handleRegister(email, password)}
+          >
             회원가입
           </LoginBtn>
           <SignConnect onClick={() => navigate("/signin")}>
@@ -144,4 +166,3 @@ function Signup() {
 }
 
 export default Signup;
-//0614 14:32
