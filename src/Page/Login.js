@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Body = styled.div`
@@ -20,7 +22,7 @@ const Container = styled.div`
 const BoxStyle = styled.div`
   //border: 5px solid red;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 70%;
@@ -30,15 +32,15 @@ const BoxStyle = styled.div`
     font-weight: 600;
   }
   > input {
-    outline: 2px solid black;
-    height: 35px;
-    width: 150px;
+    /* outline: 2px solid black; */
+    height: 25px;
+    width: 200px;
   }
 `;
 const LoginBtn = styled.button`
   /* border: 1px solid blue; */
   margin-top: 20px;
-  width: 150px;
+  width: 200px;
   height: 35px;
   font-weight: 500;
   cursor: pointer;
@@ -47,23 +49,97 @@ const SignConnect = styled.div`
   margin-top: 30px;
   cursor: pointer;
   font-weight: 500;
+  text-decoration: underline;
+  color: blue;
+`;
+
+const Ddd = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const Fff = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [notAllow, setNotAllow] = useState(true);
+
+  const navigate = useNavigate();
+
+  const handleEmail = e => {
+    setEmail(e.target.value);
+    const regex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (regex.test(email)) {
+      setEmailValid(true);
+    } else {
+      setEmailValid(false);
+    }
+  };
+  const handlePW = e => {
+    setPassword(e.target.value);
+    const regex = /^[a-zA-Z0-9]{7,25}$/;
+    if (regex.test(password)) {
+      setPasswordValid(true);
+    } else {
+      setPasswordValid(false);
+    }
+  };
+  useEffect(() => {
+    if (emailValid && passwordValid) {
+      setNotAllow(false);
+      return;
+    }
+    setNotAllow(true);
+  }, [emailValid, passwordValid]);
+
   return (
     <>
       <Body>
         <Container>
           <BoxStyle>
-            <p>이메일</p>
-            <input type="text" data-testid="email-input"></input>
+            <Ddd>
+              <p>이메일</p>
+              <input
+                type="text"
+                data-testid="email-input"
+                value={email}
+                onChange={handleEmail}
+              ></input>
+            </Ddd>
+            <Fff>
+              {emailValid === false && (
+                <div>The email is not a valid email address.</div>
+              )}
+            </Fff>
           </BoxStyle>
           <BoxStyle>
-            <p>비밀번호</p>
-            <input type="password" data-testid="password-input"></input>
+            <Ddd>
+              <p>비밀번호</p>
+              <input
+                type="password"
+                data-testid="password-input"
+                value={password}
+                onChange={handlePW}
+              ></input>
+            </Ddd>
+            <Fff>
+              {passwordValid === false && password.length > 0 && (
+                <div>8자 이상 입력해주세요.</div>
+              )}
+            </Fff>
           </BoxStyle>
-          <LoginBtn data-testid="signin-button">로그인</LoginBtn>
-          <SignConnect>회원가입하기</SignConnect>
+          <LoginBtn data-testid="signin-button" disabled={notAllow}>
+            로그인
+          </LoginBtn>
+          <SignConnect onClick={() => navigate("/signup")}>
+            회원가입하기
+          </SignConnect>
         </Container>
       </Body>
     </>
