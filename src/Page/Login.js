@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -91,6 +92,28 @@ function Login() {
       setPasswordValid(false);
     }
   };
+  const handleLogin = (email, password) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/auth/signin`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(res => {
+        // console.log(res);
+        alert("로그인성공");
+        localStorage.setItem("accessToken", res.data.access_token);
+        navigate("/todo");
+      })
+      .catch(err => console.error(err));
+  };
   useEffect(() => {
     if (emailValid && passwordValid) {
       setNotAllow(false);
@@ -136,7 +159,11 @@ function Login() {
               )}
             </Fff>
           </BoxStyle>
-          <LoginBtn data-testid="signin-button" disabled={notAllow}>
+          <LoginBtn
+            data-testid="signin-button"
+            disabled={notAllow}
+            onClick={() => handleLogin(email, password)}
+          >
             로그인
           </LoginBtn>
           <SignConnect onClick={() => navigate("/signup")}>
