@@ -30,15 +30,15 @@ const BoxStyle = styled.div`
     font-weight: 600;
   }
   > input {
-    outline: 2px solid black;
-    height: 35px;
-    width: 150px;
+    /* outline: 2px solid black; */
+    height: 25px;
+    width: 200px;
   }
 `;
 const LoginBtn = styled.button`
   /* border: 1px solid blue; */
   margin-top: 20px;
-  width: 150px;
+  width: 200px;
   height: 35px;
   font-weight: 500;
   cursor: pointer;
@@ -47,6 +47,8 @@ const SignConnect = styled.div`
   margin-top: 30px;
   cursor: pointer;
   font-weight: 500;
+  text-decoration: underline;
+  color: blue;
 `;
 
 function Login() {
