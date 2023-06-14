@@ -5,6 +5,7 @@ import styled from "styled-components";
 const Body = styled.div`
   //border: 3px solid black;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -101,6 +102,7 @@ function Login() {
   return (
     <>
       <Body>
+        <div>로그인</div>
         <Container>
           <BoxStyle>
             <Ddd>
