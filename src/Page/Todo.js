@@ -1,4 +1,7 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import TodoList from "../Todo/TodoList";
 
 const Body = styled.div`
   border: 10px solid black;
@@ -20,6 +23,7 @@ const TitlePart = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   > p {
     font-size: 30px;
     font-weight: 500;
@@ -28,15 +32,71 @@ const TitlePart = styled.div`
 const InsertPart = styled.div`
   display: flex;
   flex-direction: row;
+  padding-bottom: 10px;
 `;
 const BodyPart = styled.div`
   border: 3px solid green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 50px;
 `;
-const ListStyle = styled.li`
-  list-style: none;
-`;
+// const ListStyle = styled.li`
+//   list-style: none;
+// `;
 
 function Todo() {
+  const [addInput, setAddInput] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  // console.log(todos);
+  useEffect(() => {
+    const access_token = localStorage.getItem("access_token");
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/todos`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then(res => {
+        // console.log(res.data);
+        setTodos(res.data);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  const handleAdd = () => {
+    const access_token = localStorage.getItem("access_token");
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/todos`,
+        {
+          id: todos.length + 1,
+          todo: addInput,
+          isCompleted: false,
+          userId: todos.length + 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(res => {
+        // console.log(res);
+        setTodos([...todos, res.data]);
+      })
+      .catch(err => console.error(err));
+  };
+  // const handleAdd = () => {
+  //   // setInput(e.target.value);
+  //   //추가버튼 누르면 기존이 todo에 addInput이 추가된다.
+  // };
+  // console.log(todos[0]);
   return (
     <>
       <Body>
@@ -44,35 +104,21 @@ function Todo() {
           <TitlePart>
             <p>Todo List</p>
             <InsertPart>
-              <input type="text"></input>
-              <button>추가</button>
+              <input
+                type="text"
+                data-testid="new-todo-input"
+                onChange={e => setAddInput(e.target.value)}
+              ></input>
+              <button
+                data-testid="new-todo-add-button"
+                onClick={() => handleAdd()}
+              >
+                추가
+              </button>
             </InsertPart>
           </TitlePart>
           <BodyPart>
-            <ListStyle>
-              <label>
-                <input type="checkbox" />
-                <span>밥먹기</span>
-              </label>
-              <button>수정</button>
-              <button>삭제</button>
-            </ListStyle>
-            <ListStyle>
-              <label>
-                <input type="checkbox" />
-                <span>산책하기</span>
-              </label>
-              <button>수정</button>
-              <button>삭제</button>
-            </ListStyle>
-            <ListStyle>
-              <label>
-                <input type="checkbox" />
-                <span>공부하기</span>
-              </label>
-              <button>수정</button>
-              <button>삭제</button>
-            </ListStyle>
+            <TodoList todos={todos} />
           </BodyPart>
         </Container>
       </Body>

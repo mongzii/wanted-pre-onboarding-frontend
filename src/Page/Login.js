@@ -109,7 +109,7 @@ function Login() {
       .then(res => {
         // console.log(res);
         alert("로그인성공");
-        localStorage.setItem("accessToken", res.data.access_token);
+        localStorage.setItem("access_token", res.data.access_token);
         navigate("/todo");
       })
       .catch(err => console.error(err));
