@@ -92,11 +92,7 @@ function Todo() {
       })
       .catch(err => console.error(err));
   };
-  // const handleAdd = () => {
-  //   // setInput(e.target.value);
-  //   //추가버튼 누르면 기존이 todo에 addInput이 추가된다.
-  // };
-  // console.log(todos[0]);
+
   return (
     <>
       <Body>
