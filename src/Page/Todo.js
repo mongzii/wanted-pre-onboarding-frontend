@@ -114,7 +114,7 @@ function Todo() {
             </InsertPart>
           </TitlePart>
           <BodyPart>
-            <TodoList todos={todos} />
+            <TodoList todos={todos} setTodos={setTodos} />
           </BodyPart>
         </Container>
       </Body>
