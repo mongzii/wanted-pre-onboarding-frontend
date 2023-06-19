@@ -51,6 +51,7 @@ const BodyPart = styled.div`
 function Todo() {
   const [addInput, setAddInput] = useState("");
   const [todos, setTodos] = useState([]);
+  // const [showEdit, setShowEdit] = useState(false);
 
   // console.log(todos);
   useEffect(() => {
@@ -89,6 +90,7 @@ function Todo() {
       .then(res => {
         // console.log(res);
         setTodos([...todos, res.data]);
+        setAddInput(" ");
       })
       .catch(err => console.error(err));
   };
