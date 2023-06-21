@@ -1,11 +1,21 @@
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
+
+// import { BiCheckboxChecked, BiCheckbox } from "react-icons/bi";
+
+// const ListStyle = styled.li`
+//   list-style: none;
+// `;
 
 function TodoItem({ todo, setTodo }) {
   const [editMode, setEditMode] = useState(false);
   const [updateInput, setUpdateInput] = useState("");
+  const [checkMode, setCheckMode] = useState(todo.isCompleted);
 
-  //   console.log(todo);
+  //   console.log(todo.isCompleted);
+  //   const handleCheck = () => {
+  //     console.log(todo);
+  //   };
 
   const handleDelete = id => {
     const access_token = localStorage.getItem("access_token");
@@ -23,7 +33,6 @@ function TodoItem({ todo, setTodo }) {
 
   const handleUpdate = id => {
     const access_token = localStorage.getItem("access_token");
-
     axios
       .put(
         `${process.env.REACT_APP_API_URL}/todos/${id}`,
@@ -39,37 +48,55 @@ function TodoItem({ todo, setTodo }) {
         }
       )
       .then(res => {
-        // console.log(res.data);
-
         setUpdateInput(updateInput);
-
         setEditMode(false);
         window.location.reload();
-        // setTodo(todo => (todo.id === id ? console.log("a") : console.log("b")));
-
-        //setUpdateInput 이게 값이 없어서 계속 에러가 난거다.
       })
       .catch(err => console.error(err));
+  };
+  const cancleMode = () => {
+    setEditMode(false);
   };
 
   return (
     <>
       <li>
         <label>
-          <input type="checkbox" />
+          <input type="checkbox" onClick={() => setCheckMode(!checkMode)} />
+          {/* {checkMode ? <BiCheckboxChecked /> : <BiCheckbox />} */}
         </label>
-
+        {/* {console.log(checkMode)} */}
         {editMode ? (
           <>
-            <input onChange={e => setUpdateInput(e.target.value)}></input>
-            <button onClick={() => handleUpdate(todo.id)}>제출</button>
-            <button onClick={() => setEditMode(false)}>취소</button>
+            <input
+              data-testid="modify-input"
+              onChange={e => setUpdateInput(e.target.value)}
+            ></input>
+            <button
+              data-testid="submit-button"
+              onClick={() => handleUpdate(todo.id)}
+            >
+              제출
+            </button>
+            <button data-testid="cancel-button" onClick={cancleMode}>
+              취소
+            </button>
           </>
         ) : (
           <>
             <span>{todo.todo}</span>
-            <button onClick={() => setEditMode(true)}>수정</button>
-            <button onClick={() => handleDelete(todo.id)}>삭제</button>
+            <button
+              data-testid="modify-button"
+              onClick={() => setEditMode(true)}
+            >
+              수정
+            </button>
+            <button
+              data-testid="delete-button"
+              onClick={() => handleDelete(todo.id)}
+            >
+              삭제
+            </button>
           </>
         )}
       </li>
