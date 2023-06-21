@@ -5,7 +5,7 @@ import TodoList from "../Todo/TodoList";
 import { useNavigate } from "react-router-dom";
 
 const Body = styled.div`
-  border: 10px solid black;
+  /* border: 10px solid black; */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -13,30 +13,46 @@ const Body = styled.div`
   height: 100vh;
 `;
 const Container = styled.div`
-  border: 10px solid blue;
+  border: 10px solid #1c1c1c;
   /* color: blue; */
+  border-radius: 20px;
   width: 600px;
   height: 600px;
 `;
 const TitlePart = styled.div`
-  border: 3px solid red;
+  /* border: 3px solid red; */
+  background-color: #1c1c1c;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   > p {
-    font-size: 30px;
+    font-size: 35px;
     font-weight: 500;
+    color: #ffffff;
   }
 `;
 const InsertPart = styled.div`
   display: flex;
   flex-direction: row;
   padding-bottom: 10px;
+  flex-grow: 1;
+  > button {
+    background-color: #f94c85;
+    color: #ffffff;
+    width: 60px;
+    height: 30px;
+    margin-left: 5px;
+    :hover {
+      background-color: #f94c85;
+      opacity: 0.65;
+      cursor: pointer;
+    }
+  }
 `;
 const BodyPart = styled.div`
-  border: 3px solid green;
+  /* border: 3px solid green; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -44,6 +60,7 @@ const BodyPart = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 50px;
+  /* font-size: 20px; */
 `;
 // const ListStyle = styled.li`
 //   list-style: none;
