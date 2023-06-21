@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import TodoList from "../Todo/TodoList";
+import { useNavigate } from "react-router-dom";
 
 const Body = styled.div`
   border: 10px solid black;
@@ -47,13 +48,29 @@ const BodyPart = styled.div`
 // const ListStyle = styled.li`
 //   list-style: none;
 // `;
+function authTokenExpired(authToken) {
+  if (!authToken) {
+    return true;
+  }
+  const decodedToken = decodeAuthToken(authToken);
+  const expSeconds = decodedToken.exp;
+  const nowSeconds = Math.floor(Date.now() / 1000);
+  return expSeconds < nowSeconds;
+}
+function decodeAuthToken(authToken) {
+  const payload = authToken.split(".")[1];
+  const decodedPayload = atob(payload);
+  const { exp } = JSON.parse(decodedPayload);
+  return { exp };
+}
 
 function Todo() {
   const [addInput, setAddInput] = useState("");
   const [todos, setTodos] = useState([]);
-  // const [showEdit, setShowEdit] = useState(false);
+  const navigate = useNavigate();
 
-  // console.log(todos);
+  const access_token = localStorage.getItem("access_token");
+
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
     axios
@@ -63,7 +80,6 @@ function Todo() {
         },
       })
       .then(res => {
-        // console.log(res.data);
         setTodos(res.data);
       })
       .catch(err => console.error(err));
@@ -88,12 +104,17 @@ function Todo() {
         }
       )
       .then(res => {
-        // console.log(res);
         setTodos([...todos, res.data]);
         setAddInput(" ");
       })
       .catch(err => console.error(err));
   };
+  useEffect(() => {
+    if (!access_token || authTokenExpired(access_token)) {
+      navigate("/signin");
+      return;
+    }
+  });
 
   return (
     <>
