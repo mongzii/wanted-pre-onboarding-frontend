@@ -11,10 +11,19 @@ const Body = styled.div`
   align-items: center;
   height: 100vh;
 `;
+const TitlePart = styled.div`
+  /* color: blue; */
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 5px;
+`;
 const Container = styled.div`
-  border: 3px solid black;
-  width: 650px;
-  height: 400px;
+  //border: 8px solid black;
+  background-color: #1c1c1c;
+  border-radius: 20px;
+  /* color: red; */
+  width: 600px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,20 +49,38 @@ const LoginBtn = styled.button`
   /* border: 1px solid blue; */
   margin-top: 20px;
   width: 200px;
-  height: 35px;
-  font-weight: 500;
+  height: 45px;
+  font-weight: 550;
+  color: #ffffff;
+  background-color: #f94c85;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 18px;
+  :hover {
+    background-color: #f94c85;
+    opacity: 0.65;
+  }
 `;
 const SignConnect = styled.div`
   margin-top: 30px;
   cursor: pointer;
   font-weight: 500;
   text-decoration: underline;
-  color: blue;
+  color: #ffffff;
+  font-size: 18px;
 `;
 const Ddd = styled.div`
   display: flex;
   flex-direction: row;
+  > p {
+    width: 130px;
+    color: #ffffff;
+    margin-right: 5px;
+  }
+  > input {
+    /* border: 5px solid red; */
+    margin-bottom: 5px;
+  }
 `;
 const Fff = styled.div`
   display: flex;
@@ -115,7 +142,7 @@ function Signup() {
   return (
     <>
       <Body>
-        <div>회원가입</div>
+        <TitlePart>회원가입</TitlePart>
         <Container>
           <BoxStyle>
             <Ddd>

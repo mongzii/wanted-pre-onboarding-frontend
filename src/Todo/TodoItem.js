@@ -1,11 +1,18 @@
 import { useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 // import { BiCheckboxChecked, BiCheckbox } from "react-icons/bi";
 
 // const ListStyle = styled.li`
 //   list-style: none;
 // `;
+const TodoFont = styled.span`
+  color: #1c1c1c;
+  font-size: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
 
 function TodoItem({ todo, setTodo }) {
   const [editMode, setEditMode] = useState(false);
@@ -66,6 +73,7 @@ function TodoItem({ todo, setTodo }) {
           {/* {checkMode ? <BiCheckboxChecked /> : <BiCheckbox />} */}
         </label>
         {/* {console.log(checkMode)} */}
+
         {editMode ? (
           <>
             <input
@@ -84,7 +92,8 @@ function TodoItem({ todo, setTodo }) {
           </>
         ) : (
           <>
-            <span>{todo.todo}</span>
+            <TodoFont>{todo.todo}</TodoFont>
+
             <button
               data-testid="modify-button"
               onClick={() => setEditMode(true)}
